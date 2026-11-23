@@ -3,6 +3,7 @@ type ChallengeKind = 'reply' | 'listen' | 'ask' | 'complete'
 export interface Interaction {
   kind: ChallengeKind
   speaker: string
+  context?: string
   line: string
   translation?: string
   prompt: string
@@ -43,6 +44,7 @@ export const scenes: readonly Scene[] = [
       },
       {
         kind: 'reply', speaker: 'Agente de imigração', line: 'How long will you be staying?',
+        context: 'O agente continua a conversa e pergunta quanto tempo você vai ficar.',
         translation: 'Quanto tempo você vai ficar?', prompt: 'Nesta história, sua viagem dura dez dias. Como você responderia?',
         options: ['At a hotel.', 'For ten days.', "I'm from Brazil."], correct: 1,
         answer: 'For ten days.', answerTranslation: 'Por dez dias.',
@@ -72,6 +74,7 @@ export const scenes: readonly Scene[] = [
       },
       {
         kind: 'complete', speaker: 'Recepcionista', line: 'May I see your passport, please?',
+        context: 'Com a reserva localizada, a recepcionista pede seu passaporte.',
         translation: 'Posso ver seu passaporte, por favor?', prompt: 'Complete a frase para entregar seu passaporte.', blank: 'Of course. Here ____.',
         options: ['it is', 'I am'], correct: 0,
         answer: 'Of course. Here it is.', answerTranslation: 'Claro. Aqui está.',
@@ -100,6 +103,7 @@ export const scenes: readonly Scene[] = [
       },
       {
         kind: 'reply', speaker: 'Garçom', line: 'Are you ready to order?',
+        context: 'Depois de anotar a bebida, o garçom volta para anotar o prato.',
         translation: 'Você já pode fazer o pedido?', prompt: 'Você encontrou o prato e aponta para ele no cardápio. O que diria?',
         options: ['Could I have one more minute?', 'Yes, I’d like this, please.', 'Could I have the check, please?'], correct: 1,
         answer: 'Yes, I’d like this, please.', answerTranslation: 'Sim, eu gostaria deste aqui, por favor.',

@@ -1,8 +1,8 @@
 import { useEffect, useRef, useState } from 'react'
-import { BadgeCheck, CalendarDays, Check, ClipboardList, Gift, Languages, Plane, Printer, Signpost, Smartphone, Volume2 } from 'lucide-react'
+import { BadgeCheck, Check, Plane, Printer, Smartphone, Volume2 } from 'lucide-react'
 import { Footer, Header } from '../components/Layout'
 import { OfferReveal } from '../components/OfferReveal'
-import { plans, bonuses } from '../data/plans'
+import { plans } from '../data/plans'
 import { track } from '../data/analytics'
 
 import { categories } from '../data/categories'
@@ -68,25 +68,6 @@ function ProductFormats() {
         <div className="format-visual" role="img" aria-label="Três cards ilustrados com exemplos de compras, aeroporto e passeios"><PrintPreview/></div>
       </article>
     </div>
-  </section>
-}
-
-const bonusIcons = [Signpost, ClipboardList, CalendarDays, Languages]
-
-function ProductBonuses() {
-  return <section className="bonus-preview" aria-labelledby="bonus-title">
-    <span className="eyebrow"><Gift size={15}/> Exclusivos do Plano Completo</span>
-    <h2 id="bonus-title">+4 bônus para sua viagem</h2>
-    <ul className="bonus-preview-grid">
-      {bonuses.map(([name, description], index) => {
-        const Icon = bonusIcons[index] ?? Gift
-        return <li key={name}>
-          <span className="stop-icon"><Icon size={20}/></span>
-          <h3>{name}</h3>
-          <p>{description}</p>
-        </li>
-      })}
-    </ul>
   </section>
 }
 
@@ -158,7 +139,6 @@ export function OfferPage() {
       </section>
       <ProductContents/>
       <ProductFormats/>
-      <ProductBonuses/>
       <OfferReveal heading={plansHeading}>
         <div className="plans-grid" id="plans">{featuredFirstPlans.map(plan => <OfferPlan key={plan.id} plan={plan}
           selected={selected === plan.id} onSelect={() => selectPlan(plan)}/>)}</div>

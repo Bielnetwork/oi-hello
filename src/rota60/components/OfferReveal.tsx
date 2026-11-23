@@ -1,10 +1,10 @@
 import { useEffect, useRef, useState, type ReactNode, type RefObject } from 'react'
 import { Check, Plane } from 'lucide-react'
-import { offerBenefits } from '../data/offerBenefits'
+import { bonusCards } from '../data/offerBenefits'
 import { track } from '../data/analytics'
 
 type Phase = 'cards' | 'confirm' | 'leaving' | 'entering' | 'shown'
-const allOpen = (1 << offerBenefits.length) - 1
+const allOpen = (1 << bonusCards.length) - 1
 
 export function OfferReveal({ heading, children }: {
   heading: RefObject<HTMLHeadingElement | null>
@@ -16,18 +16,21 @@ export function OfferReveal({ heading, children }: {
   const reported = useRef(false)
   const focusPlans = useRef(false)
   const showPlans = phase === 'entering' || phase === 'shown'
-  const openedCount = offerBenefits.filter((_, index) => (opened & (1 << index)) !== 0).length
+  const openedCount = bonusCards.filter((_, index) => (opened & (1 << index)) !== 0).length
 
   useEffect(() => {
     if (opened !== allOpen || phase !== 'cards') return
-    setPhase(window.matchMedia('(prefers-reduced-motion: reduce)').matches ? 'shown' : 'confirm')
+    setPhase('confirm')
   }, [opened, phase])
 
   useEffect(() => {
-    const duration = { confirm: 750, leaving: 250, entering: 645 }
+    const duration = { confirm: 2400, leaving: 250, entering: 645 }
     const next = { confirm: 'leaving', leaving: 'entering', entering: 'shown' } as const
     if (phase !== 'confirm' && phase !== 'leaving' && phase !== 'entering') return
-    const timer = window.setTimeout(() => setPhase(current => current === phase ? next[phase] : current), duration[phase])
+    const upcoming = phase === 'confirm' && window.matchMedia('(prefers-reduced-motion: reduce)').matches
+      ? 'shown'
+      : next[phase]
+    const timer = window.setTimeout(() => setPhase(current => current === phase ? upcoming : current), duration[phase])
     return () => window.clearTimeout(timer)
   }, [phase])
 
@@ -46,14 +49,15 @@ export function OfferReveal({ heading, children }: {
   }
 
   return <section ref={section} id="oferta-planos" className={'plans-section offer-reveal reveal-' + phase}>
-    <h2 tabIndex={-1} ref={heading}>{showPlans ? 'Escolha como quer continuar sua preparação.' : 'Antes de escolher, descubra o que o Rota 60 oferece.'}</h2>
+    {!showPlans && <span className="eyebrow bonus-deck-label">Exclusivos do Plano Completo</span>}
+    <h2 tabIndex={-1} ref={heading}>{showPlans ? 'Escolha como quer continuar sua preparação.' : 'Descubra os quatro bônus para sua viagem.'}</h2>
     {!showPlans && <>
-      <p className="section-description">Toque nas três cartas para revelar.</p>
+      <p className="section-description">Toque nas quatro cartas para revelar os bônus.</p>
       <div className="reveal-meter" role="status">
-        {opened === allOpen ? <><Check size={16}/> Benefícios revelados</> : <>{openedCount} de {offerBenefits.length} revelados</>}
+        {opened === allOpen ? <><Check size={16}/> Bônus revelados</> : <>{openedCount} de {bonusCards.length} revelados</>}
       </div>
       <div className="benefit-deck">
-        {offerBenefits.map(({ title, description, icon: Icon }, index) => {
+        {bonusCards.map(({ title, description, icon: Icon }, index) => {
           const isOpen = Boolean(opened & (1 << index))
           const number = String(index + 1).padStart(2, '0')
           return <button type="button" key={number} className="benefit-ticket" aria-expanded={isOpen}

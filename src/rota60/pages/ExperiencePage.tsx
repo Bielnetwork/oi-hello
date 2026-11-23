@@ -129,7 +129,7 @@ function Mission({ scene, index, interaction, selected, controller, onSelect, on
         {challenge ? <>
           <div className="scene-meta"><span>{scene.title}</span><span>Interação {number} de {count}</span></div>
           <h1 tabIndex={-1} ref={heading}>{interaction === 0 ? scene.arrival : scene.title}</h1>
-          {interaction === 0 && <p className="context">{scene.context}</p>}
+          <p className="context">{challenge.context ?? scene.context}</p>
           <Challenge interaction={challenge} selected={selected} controller={controller} onSelect={onSelect} onNext={onNext}/>
         </> : <div className="mission-transition">
           <div className="completion-symbol" aria-hidden="true"><TransitionIcon size={33}/></div>

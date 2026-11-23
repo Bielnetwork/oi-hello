@@ -62,29 +62,6 @@
   .experience-app .completion { margin-top: 14px; }
 }
 
-.bonus-preview { margin-top: 32px; }
-.bonus-preview h2 { margin-top: 8px; font-size: clamp(1.42rem, 3.3vw, 2rem); letter-spacing: -.035em; }
-.bonus-preview > p { margin-top: 3px; }
-.bonus-preview-grid {
-  padding: 0;
-  margin: 12px 0 0;
-  list-style: none;
-  display: grid;
-  grid-template-columns: repeat(4, minmax(0, 1fr));
-  gap: 9px;
-}
-.bonus-preview-grid li {
-  min-width: 0;
-  padding: 12px;
-  border-radius: 14px;
-  border: 1px solid #e7d9fa;
-  background: linear-gradient(145deg, #fff, #f8f1ff);
-}
-.bonus-preview-grid .stop-icon { width: 34px; height: 34px; border-radius: 10px; }
-.bonus-preview-grid li:nth-child(even) .stop-icon { background: #e5f2ff; color: #345c8e; }
-.bonus-preview-grid h3 { margin-top: 6px; font-size: .96rem; line-height: 1.2; overflow-wrap: anywhere; }
-.bonus-preview-grid p { margin-top: 5px; font-size: .83rem; line-height: 1.43; }
-
 .offer-reveal {
   --reveal-ease: cubic-bezier(.2, .82, .26, 1);
   padding: clamp(14px, 3.5vw, 34px);
@@ -104,9 +81,9 @@
 }
 .benefit-deck {
   display: grid;
-  grid-template-columns: repeat(3, minmax(0, 1fr));
-  gap: clamp(5px, 2vw, 20px);
-  max-width: 720px;
+  grid-template-columns: repeat(4, minmax(0, 1fr));
+  gap: clamp(8px, 1.8vw, 18px);
+  max-width: 880px;
   margin: 16px auto 9px;
   padding: 5px;
 }
@@ -172,7 +149,8 @@
 }
 .ticket-number, .ticket-invite { display: flex; align-items: center; gap: 4px; font-size: .77rem; font-weight: 850; }
 .ticket-number { letter-spacing: .12em; }
-.ticket-invite { justify-content: center; text-align: center; }
+.ticket-invite { justify-content: center; text-align: center; font-size: .85rem; font-weight: 900; }
+.bonus-deck-label { margin-bottom: 7px; }
 .ticket-question {
   justify-self: center;
   color: #f5eaff;
@@ -219,13 +197,13 @@
   100% { opacity: 1; transform: none; }
 }
 @media (max-width: 650px) {
-  .bonus-preview-grid { grid-template-columns: repeat(2, minmax(0, 1fr)); }
+  .benefit-deck { grid-template-columns: repeat(2, minmax(0, 1fr)); max-width: 440px; }
   .benefit-ticket:first-child { --tilt: -1.6deg; --exit-x: -6px; }
   .benefit-ticket:last-child { --tilt: 1.6deg; --exit-x: 6px; }
   .ticket-back > svg:not(.ticket-check) { width: 19px; height: 19px; }
   .ticket-check { width: 13px; height: 13px; top: 5px; right: 5px; }
   .ticket-number svg { width: 11px; }
-  .ticket-invite { font-size: .69rem; }
+  .ticket-invite { font-size: .79rem; }
   .offer-reveal .plans-grid { gap: 14px; }
 }
 @media (prefers-reduced-motion: reduce) {
@@ -233,11 +211,6 @@
   .benefit-ticket[aria-expanded=true] .ticket-front { visibility: hidden; }
 }
 
-.offer-page .bonus-preview { margin-top: 24px; }
-.offer-page .bonus-preview-grid { gap: 7px; margin-top: 9px; }
-.offer-page .bonus-preview-grid li { padding: 9px 10px; }
-.offer-page .bonus-preview-grid h3 { font-size: .88rem; }
-.offer-page .bonus-preview-grid p { margin-top: 3px; font-size: .79rem; line-height: 1.3; }
 .offer-page .offer-reveal { margin-top: 22px; padding: clamp(12px, 2.5vw, 25px); }
 .offer-page .plans-grid { grid-template-columns: minmax(0, 1.15fr) minmax(0, 1fr); gap: 14px; margin-top: 12px; }
 .offer-page .offer-reveal .plan { padding: 13px; border-radius: 16px; }
@@ -282,8 +255,6 @@
   .offer-page .offer-categories h3 { font-size: .72rem; line-height: 1.1; overflow-wrap: anywhere; }
   .offer-page .offer-categories p, .offer-page .category-detail { display: none; }
   .offer-page .offer-formats { margin-top: 23px; }
-  .offer-page .bonus-preview-grid .stop-icon { width: 27px; height: 27px; border-radius: 8px; }
-  .offer-page .bonus-preview-grid .stop-icon svg { width: 16px; height: 16px; }
   .offer-page .plans-grid { grid-template-columns: minmax(0, 1fr); gap: 10px; }
   .offer-page .guarantee { margin-top: 17px; padding: 12px; }
 }

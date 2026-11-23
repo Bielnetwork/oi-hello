@@ -1,19 +1,10 @@
-import { Headphones, Route, Smartphone } from 'lucide-react'
+import { CalendarDays, ClipboardList, Gift, Languages, Signpost } from 'lucide-react'
+import { bonuses } from './plans'
 
-export const offerBenefits = [
-  {
-    title: '60 situações práticas',
-    description: 'Pratique conversas para diferentes momentos da sua viagem aos EUA.',
-    icon: Route,
-  },
-  {
-    title: 'Áudio ajustável',
-    description: 'Ouça as frases, repita e escolha uma velocidade confortável.',
-    icon: Headphones,
-  },
-  {
-    title: 'Guia no celular',
-    description: 'Acesse seus cards digitais de maneira organizada, quando precisar.',
-    icon: Smartphone,
-  },
-] as const
+const bonusIcons = [Signpost, ClipboardList, CalendarDays, Languages]
+
+export const bonusCards = bonuses.map(([title, description], index) => ({
+  title,
+  description,
+  icon: bonusIcons[index] ?? Gift,
+}))
