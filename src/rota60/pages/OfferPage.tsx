@@ -1,7 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 import { BadgeCheck, Check, Plane, Printer, Smartphone, Volume2 } from 'lucide-react'
 import { Footer, Header } from '../components/Layout'
-import { OfferReveal } from '../components/OfferReveal'
+import { BonusReveal } from '../components/BonusReveal'
 import { plans } from '../data/plans'
 import { track } from '../data/analytics'
 
@@ -139,11 +139,13 @@ export function OfferPage() {
       </section>
       <ProductContents/>
       <ProductFormats/>
-      <OfferReveal heading={plansHeading}>
+      <BonusReveal/>
+      <section id="oferta-planos" className="plans-section offer-reveal" aria-labelledby="plans-heading">
+        <h2 id="plans-heading" tabIndex={-1} ref={plansHeading}>Escolha como quer continuar sua preparação.</h2>
         <div className="plans-grid" id="plans">{featuredFirstPlans.map(plan => <OfferPlan key={plan.id} plan={plan}
           selected={selected === plan.id} onSelect={() => selectPlan(plan)}/>)}</div>
         {selectedPlan && <p className="selection-feedback" role="status"><Check size={17}/> Plano {selectedPlan.name} selecionado. Esta é uma prévia demonstrativa.</p>}
-      </OfferReveal>
+      </section>
       <section className="guarantee">
         <span className="stop-icon"><BadgeCheck size={27}/></span>
         <div><h2>7 dias para conhecer o Rota 60.</h2><p>Explore o material e conheça os recursos. Se não atender às suas expectativas, você poderá solicitar reembolso dentro de 7 dias, conforme as condições da plataforma.</p></div>
