@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
-import { BadgeCheck, CalendarDays, Check, ClipboardList, Gift, Languages, Plane, Printer, Signpost, Smartphone, Sparkles, Volume2 } from 'lucide-react'
+import { BadgeCheck, CalendarDays, Check, ClipboardList, Gift, Languages, Plane, Printer, Signpost, Smartphone, Volume2 } from 'lucide-react'
 import { Footer, Header } from '../components/Layout'
 import { OfferReveal } from '../components/OfferReveal'
 import { plans, bonuses } from '../data/plans'
@@ -100,17 +100,14 @@ function OfferPlan({ plan, selected, onSelect }: {
 }) {
   const complete = plan.id === 'complete'
   return <article className={'plan ' + (complete ? 'plan-complete' : '')} aria-labelledby={'plan-' + plan.id}>
-    <div className="plan-header">
-      <h3 id={'plan-' + plan.id}>Rota 60 {plan.name}</h3>
-      {complete && <span className="recommended"><Sparkles size={14} aria-hidden="true"/> Recomendado</span>}
-    </div>
+    <h3 id={'plan-' + plan.id}>Rota 60 {plan.name}</h3>
     <div className="plan-body">
-        <p className="price"><span>R$</span> {plan.price}</p>
-        <ul className="features">{plan.features.map(feature => <li key={feature}><Check size={16} aria-hidden="true"/>{feature}</li>)}
-          {complete && <li><Gift size={16} aria-hidden="true"/><a className="plan-bonus-link" href="#bonus-title">4 bônus exclusivos</a></li>}
-        </ul>
-        <button className={complete ? 'primary' : 'outline'} aria-pressed={selected} onClick={onSelect}>{plan.button}</button>
-        {selected && <p className="selection-feedback" role="status"><Check size={17}/> Plano {plan.name} selecionado. Esta é uma prévia demonstrativa.</p>}
+      <p className="price"><span>R$</span> {plan.price}</p>
+      {complete && <p className="plan-includes">Inclui tudo do Básico +</p>}
+      <ul className="features">
+        {plan.features.map(feature => <li key={feature}><Check size={16} aria-hidden="true"/>{feature}</li>)}
+      </ul>
+      <button className={complete ? 'primary' : 'outline'} aria-pressed={selected} onClick={onSelect}>{plan.button}</button>
     </div>
   </article>
 }
@@ -126,6 +123,7 @@ function readSelection() {
 
 export function OfferPage() {
   const [selected, setSelected] = useState(readSelection)
+  const selectedPlan = plans.find(plan => plan.id === selected)
   const heading = useRef<HTMLHeadingElement>(null)
   const plansHeading = useRef<HTMLHeadingElement>(null)
   useEffect(() => {
@@ -167,6 +165,7 @@ export function OfferPage() {
       <OfferReveal heading={plansHeading}>
         <div className="plans-grid" id="plans">{featuredFirstPlans.map(plan => <OfferPlan key={plan.id} plan={plan}
           selected={selected === plan.id} onSelect={() => selectPlan(plan)}/>)}</div>
+        {selectedPlan && <p className="selection-feedback" role="status"><Check size={17}/> Plano {selectedPlan.name} selecionado. Esta é uma prévia demonstrativa.</p>}
       </OfferReveal>
       <section className="guarantee">
         <span className="stop-icon"><BadgeCheck size={27}/></span>
