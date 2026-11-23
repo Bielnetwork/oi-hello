@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
-import { BadgeCheck, BedDouble, CarFront, Check, ChevronLeft, CircleHelp, KeyRound, Languages, Luggage, Plane, ScanFace, Utensils, Volume2, X } from 'lucide-react'
+import { BadgeCheck, CarFront, Check, ChevronLeft, CircleHelp, KeyRound, Languages, Luggage, Plane, Utensils, Volume2, X } from 'lucide-react'
 import { Header, Footer } from '../components/Layout'
 import { AudioButton, AudioSpeed, useTravelAudio, type AudioController } from '../components/Audio'
 import { scenes, type Interaction, type Scene } from '../data/scenes'
@@ -7,7 +7,6 @@ import { categories } from '../data/categories'
 import { travelImage } from '../data/images'
 import { track } from '../data/analytics'
 
-const sceneIcons = [ScanFace, Luggage, CarFront, BedDouble, Utensils]
 const transitionIcons = [BadgeCheck, Luggage, CarFront, KeyRound, Utensils]
 const count = scenes.reduce((total, scene) => total + scene.interactions.length, 0)
 
@@ -26,7 +25,6 @@ function Intro({ onStart }: { onStart: () => void }) {
       <div className="intro-copy">
         <span className="eyebrow"><Plane size={15}/> Sua primeira missão nos EUA</span>
         <h1>Você acabou de chegar aos EUA. <em>Conseguiria se virar em inglês?</em></h1>
-        <p>Viva sua primeira viagem em uma simulação interativa. Ouça, escolha suas respostas e descubra como se preparar.</p>
         <button className="primary" onClick={onStart}><Plane size={19}/> Começar minha viagem</button>
         <div className="intro-details"><span>Gratuito</span><span>Sem cadastro</span><span><Volume2 size={15}/> Com áudio e tradução</span></div>
       </div>
@@ -34,16 +32,6 @@ function Intro({ onStart }: { onStart: () => void }) {
         <img src={travelImage('airport')} alt="Viajante brasileira com mala em um aeroporto americano" fetchPriority="high"/>
         <figcaption><span className="destination-icon"><Plane size={19}/></span><span><small>DESTINO</small><strong>Estados Unidos</strong></span></figcaption>
       </figure>
-    </section>
-    <section className="itinerary" aria-label="Roteiro da missão">
-      <div className="section-label"><span>SEU ROTEIRO</span><span className="label-rule"/></div>
-      <div className="itinerary-grid journey-itinerary">{scenes.map((scene, index) => {
-        const Icon = sceneIcons[index] ?? Plane
-        return <article className="stop" key={scene.id}>
-          <span className={'stop-icon stop-' + (index % 3)}><Icon size={21}/></span>
-          <h2>{scene.title}</h2>
-        </article>
-      })}</div>
     </section>
   </main>
 }
@@ -68,6 +56,7 @@ function Dialogue({ interaction, controller }: { interaction: Interaction; contr
       <button className="quiet translation-toggle" aria-expanded={translated} aria-controls="translation" onClick={() => setTranslated(!translated)}><Languages size={17}/>{translated ? 'Ocultar tradução' : 'Ver tradução'}</button>
       <p className="translation" id="translation" hidden={!translated}>{translation}</p>
     </>}
+    <AudioSpeed controller={controller}/>
   </div>
 }
 
@@ -141,7 +130,6 @@ function Mission({ scene, index, interaction, selected, controller, onSelect, on
           <div className="scene-meta"><span>{scene.title}</span><span>Interação {number} de {count}</span></div>
           <h1 tabIndex={-1} ref={heading}>{interaction === 0 ? scene.arrival : scene.title}</h1>
           {interaction === 0 && <p className="context">{scene.context}</p>}
-          <AudioSpeed controller={controller}/>
           <Challenge interaction={challenge} selected={selected} controller={controller} onSelect={onSelect} onNext={onNext}/>
         </> : <div className="mission-transition">
           <div className="completion-symbol" aria-hidden="true"><TransitionIcon size={33}/></div>
@@ -159,7 +147,6 @@ function Completion({ onOffer, onReset }: { onOffer: () => void; onReset: () => 
   return <main className="mission-shell completion screen-in">
     <div className="completion-symbol"><BadgeCheck size={39}/></div>
     <h1 tabIndex={-1} ref={heading}>Sua viagem está só começando. Continue sua preparação.</h1>
-    <p>Você praticou suas primeiras conversas. Agora descubra como se preparar para outras situações que podem acontecer nos EUA.</p>
     <img className="completion-image scene-image" src={travelImage('meal')} alt="A viajante aproveita a primeira refeição nos Estados Unidos"/>
     <section className="completion-product">
       <div className="stats">

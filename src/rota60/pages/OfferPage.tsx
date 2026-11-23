@@ -50,8 +50,8 @@ function ProductContents() {
       <div><strong>120</strong><span>cards</span></div>
       <div><strong>6</strong><span>categorias</span></div>
     </div>
-    <div className="benefits offer-categories">{categories.map(({ name, example, icon: Icon }) => (
-      <article key={name}><span className="stop-icon" aria-hidden="true"><Icon size={22}/></span><h3>{name === 'Passeios e transporte' ? <><span>Passeios</span><span className="category-detail"> e transporte</span></> : name}</h3><p>{example}</p></article>
+    <div className="benefits offer-categories">{categories.map(({ name, icon: Icon }) => (
+      <article key={name}><span className="stop-icon" aria-hidden="true"><Icon size={22}/></span><h3>{name === 'Passeios e transporte' ? <><span>Passeios</span><span className="category-detail"> e transporte</span></> : name}</h3></article>
     ))}</div>
   </section>
 }
@@ -59,7 +59,6 @@ function ProductContents() {
 function ProductFormats() {
   return <section className="receive offer-formats">
     <h2>Pratique no celular. Leve seus cards na mala.</h2>
-    <p className="section-description">Use o miniapp para ouvir e treinar as conversas. No Plano Completo, você também recebe os cards preparados para impressão.</p>
     <div className="format-grid">
       <article className="format-panel">
         <h3><Smartphone size={21}/> Miniapp digital</h3>
