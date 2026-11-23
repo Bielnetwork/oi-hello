@@ -44,7 +44,6 @@ function ProductPreview() {
 function ProductContents() {
   return <section className="receive product-contents">
     <h2>Muito além das situações que você acabou de praticar.</h2>
-    <p className="section-description">O Rota 60 reúne conversas para diferentes momentos da sua viagem aos EUA.</p>
     <div className="stats product-stats">
       <div><strong>60</strong><span>situações</span></div>
       <div><strong>120</strong><span>cards</span></div>
@@ -149,7 +148,6 @@ export function OfferPage() {
         <div>
           <span className="eyebrow"><Plane size={16}/> Rota 60 — Inglês para Viagem</span>
           <h1 ref={heading} tabIndex={-1}>Você já começou. <em>Agora prepare-se para o resto da viagem.</em></h1>
-          <p>Continue praticando com 60 situações reais e 120 cards ilustrados com áudio e tradução.</p>
           <button className="primary offer-hero-cta" onClick={() => {
             const target = plansHeading.current
             target?.focus({ preventScroll: true })
