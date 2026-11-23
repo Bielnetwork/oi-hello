@@ -22,3 +22,23 @@ cd <repository-name>
 npm i
 npm run dev
 ```
+
+## Rota 60 — site de vendas
+
+O funil utiliza React e Vite dentro da estrutura TanStack Start do projeto Lovable.
+Use Node.js 22.12 ou superior (ou Node.js 24) e Bun para instalar as versões do lockfile.
+
+```sh
+bun install --frozen-lockfile
+bun run dev
+bun run build
+bun run test
+```
+
+Abra `/` ou `/experiencia` para a demonstração. A conclusão leva a `/oferta`, que também
+pode ser acessada diretamente. As ilustrações ficam em `public/images`. O áudio usa a
+síntese de voz do navegador e depende das vozes instaladas no dispositivo.
+
+A seleção de planos é demonstrativa. Checkout Wiapy e integração com o miniapp de entrega
+estão pendentes. O push para `main` sincroniza o código com o editor vinculado. Para atualizar
+o endereço público, use **Publish → Publish changes** nesse mesmo projeto Lovable.
