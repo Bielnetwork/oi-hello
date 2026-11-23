@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
-import { BadgeCheck, CalendarDays, Check, ClipboardList, Gift, Languages, Layers3, Plane, Printer, Signpost, Smartphone, Sparkles, Volume2 } from 'lucide-react'
+import { BadgeCheck, CalendarDays, Check, ClipboardList, Gift, Languages, Plane, Printer, Signpost, Smartphone, Sparkles, Volume2 } from 'lucide-react'
 import { Footer, Header } from '../components/Layout'
 import { OfferReveal } from '../components/OfferReveal'
 import { plans, bonuses } from '../data/plans'
@@ -42,7 +42,7 @@ function ProductPreview() {
 }
 
 function ProductContents() {
-  return <section className="receive">
+  return <section className="receive product-contents">
     <h2>Muito além das situações que você acabou de praticar.</h2>
     <p className="section-description">O Rota 60 reúne conversas para diferentes momentos da sua viagem aos EUA.</p>
     <div className="stats product-stats">
@@ -50,8 +50,8 @@ function ProductContents() {
       <div><strong>120</strong><span>cards</span></div>
       <div><strong>6</strong><span>categorias</span></div>
     </div>
-    <div className="benefits">{categories.map(({ name, example, icon: Icon }) => (
-      <article key={name}><span className="stop-icon"><Icon size={22}/></span><h3>{name}</h3><p>{example}</p></article>
+    <div className="benefits offer-categories">{categories.map(({ name, example, icon: Icon }) => (
+      <article key={name}><span className="stop-icon" aria-hidden="true"><Icon size={22}/></span><h3>{name === 'Passeios e transporte' ? <><span>Passeios</span><span className="category-detail"> e transporte</span></> : name}</h3><p>{example}</p></article>
     ))}</div>
   </section>
 }
@@ -79,7 +79,6 @@ function ProductBonuses() {
   return <section className="bonus-preview" aria-labelledby="bonus-title">
     <span className="eyebrow"><Gift size={15}/> Exclusivos do Plano Completo</span>
     <h2 id="bonus-title">+4 bônus para sua viagem</h2>
-    <p>Materiais extras para complementar sua preparação.</p>
     <ul className="bonus-preview-grid">
       {bonuses.map(([name, description], index) => {
         const Icon = bonusIcons[index] ?? Gift
@@ -94,6 +93,7 @@ function ProductBonuses() {
 }
 
 type Plan = (typeof plans)[number]
+const featuredFirstPlans = [...plans].sort((a, b) => Number(b.id === 'complete') - Number(a.id === 'complete'))
 
 function OfferPlan({ plan, selected, onSelect }: {
   plan: Plan; selected: boolean; onSelect: () => void
@@ -101,18 +101,14 @@ function OfferPlan({ plan, selected, onSelect }: {
   const complete = plan.id === 'complete'
   return <article className={'plan ' + (complete ? 'plan-complete' : '')} aria-labelledby={'plan-' + plan.id}>
     <div className="plan-header">
-      <span className="stop-icon">{complete ? <Layers3 size={23}/> : <Smartphone size={23}/>}</span>
-      {complete && <span className="recommended"><Sparkles size={14}/> Mais completo</span>}
+      <h3 id={'plan-' + plan.id}>Rota 60 {plan.name}</h3>
+      {complete && <span className="recommended"><Sparkles size={14} aria-hidden="true"/> Recomendado</span>}
     </div>
-    <h3 id={'plan-' + plan.id}>Rota 60 {plan.name}</h3>
     <div className="plan-body">
         <p className="price"><span>R$</span> {plan.price}</p>
-        <ul className="features">{plan.features.map(feature => <li key={feature}><Check size={17}/>{feature}</li>)}</ul>
-        {plan.extras && <div className="plan-extras"><strong>Disponíveis no Completo</strong><ul>{plan.extras.map(extra => <li key={extra}>{extra}</li>)}</ul></div>}
-        {complete && <section className="bonuses">
-          <h4><Gift size={18}/> Quatro bônus incluídos</h4>
-          <ol>{bonuses.map(([name, description]) => <li key={name}><strong>{name}</strong><span>{description}</span></li>)}</ol>
-        </section>}
+        <ul className="features">{plan.features.map(feature => <li key={feature}><Check size={16} aria-hidden="true"/>{feature}</li>)}
+          {complete && <li><Gift size={16} aria-hidden="true"/><a className="plan-bonus-link" href="#bonus-title">4 bônus exclusivos</a></li>}
+        </ul>
         <button className={complete ? 'primary' : 'outline'} aria-pressed={selected} onClick={onSelect}>{plan.button}</button>
         {selected && <p className="selection-feedback" role="status"><Check size={17}/> Plano {plan.name} selecionado. Esta é uma prévia demonstrativa.</p>}
     </div>
@@ -169,7 +165,7 @@ export function OfferPage() {
       <ProductFormats/>
       <ProductBonuses/>
       <OfferReveal heading={plansHeading}>
-        <div className="plans-grid" id="plans">{plans.map(plan => <OfferPlan key={plan.id} plan={plan}
+        <div className="plans-grid" id="plans">{featuredFirstPlans.map(plan => <OfferPlan key={plan.id} plan={plan}
           selected={selected === plan.id} onSelect={() => selectPlan(plan)}/>)}</div>
       </OfferReveal>
       <section className="guarantee">

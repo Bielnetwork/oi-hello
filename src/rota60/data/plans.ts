@@ -1,8 +1,8 @@
 export const bonuses = [
-  ['Decifrando os EUA', 'Guia visual de placas, avisos e sinalizações comuns.'],
-  ['Minhas Respostas de Viagem', 'Material para organizar informações e respostas pessoais da viagem.'],
-  ['Missão Embarque — 7 Dias', 'Roteiro de preparação para os dias anteriores ao embarque.'],
-  ['Tradutor de Emergência Offline', 'Tutorial para configurar recursos de tradução offline no celular, conforme a disponibilidade do aplicativo.'],
+  ['Decifrando os EUA', 'Entenda placas e avisos dos EUA.'],
+  ['Minhas Respostas de Viagem', 'Prepare suas respostas para a viagem.'],
+  ['Missão Embarque — 7 Dias', 'Organize a semana antes do embarque.'],
+  ['Tradutor de Emergência Offline', 'Configure a tradução offline em apps compatíveis.'],
 ] as const
 
 interface Plan {
