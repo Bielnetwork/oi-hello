@@ -1,6 +1,7 @@
 import { useEffect, useRef, useState } from 'react'
 import { Volume2 } from 'lucide-react'
 import { track } from '../data/analytics'
+import { audioManifest } from '../data/audioManifest'
 
 const speeds = [
   { rate: 0.7, label: 'Muito devagar', display: '0.70x' },
@@ -20,19 +21,20 @@ function readRate(): Rate {
 }
 
 export function useTravelAudio() {
-  const engine = window.speechSynthesis
-  const voices = useRef<SpeechSynthesisVoice[]>([])
-  const request = useRef(0)
   const timer = useRef<number>(undefined)
-  const active = useRef<{ utterance: SpeechSynthesisUtterance; source: string }>(null)
+  const active = useRef<HTMLAudioElement>(null)
   const [rate, setRate] = useState(readRate)
   const [audio, setAudio] = useState<{ source: string; status: Status }>({ source: '', status: 'idle' })
 
   function cancel() {
-    request.current++
     window.clearTimeout(timer.current)
+    const media = active.current
     active.current = null
-    engine?.cancel()
+    if (!media) return
+    media.onplaying = media.onended = media.onerror = null
+    media.pause()
+    media.removeAttribute('src')
+    media.load()
   }
 
   function stop() {
@@ -40,65 +42,43 @@ export function useTravelAudio() {
     setAudio({ source: '', status: 'idle' })
   }
 
-  useEffect(() => {
-    if (!engine) return
-    const update = () => { voices.current = engine.getVoices() }
-    update()
-    engine.addEventListener('voiceschanged', update)
-    return () => {
-      engine.removeEventListener('voiceschanged', update)
-      cancel()
-    }
-  }, [engine])
+  useEffect(() => cancel, [])
 
-  function play(text: string, source: string, speed: Rate = rate) {
+  function play(text: string, source: string) {
     cancel()
-    const token = request.current
-    const update = (status: Status) => {
-      if (request.current === token) setAudio({ source, status })
-    }
-    if (!engine || !window.SpeechSynthesisUtterance) {
-      update('unavailable')
-      return
-    }
-    const available = engine.getVoices()
-    if (available.length) voices.current = available
-    const voice = voices.current.find(item => item.lang.toLowerCase().replace('_', '-') === 'en-us')
-      ?? voices.current.find(item => /^en(?:[-_]|$)/i.test(item.lang))
-    if (!voice) {
-      update('unavailable')
+    const file = audioManifest[text]
+    if (!file) {
+      setAudio({ source, status: 'unavailable' })
       return
     }
 
-    const utterance = new SpeechSynthesisUtterance(text)
-    utterance.voice = voice
-    utterance.lang = voice.lang
-    utterance.rate = speed
-    active.current = { utterance, source }
-    const finish = (status: Status) => {
-      if (request.current !== token) return
-      window.clearTimeout(timer.current)
-      active.current = null
-      update(status)
-    }
-    utterance.onstart = () => {
-      if (request.current !== token) return
-      window.clearTimeout(timer.current)
-      update('playing')
-      track('audio_played', { rate: speed })
-    }
-    utterance.onend = () => finish('idle')
-    utterance.onerror = () => finish('unavailable')
-    update('starting')
-    timer.current = window.setTimeout(() => {
-      update('unavailable')
+    const media = new Audio()
+    active.current = media
+    media.preload = 'none'
+    media.defaultPlaybackRate = media.playbackRate = rate
+    media.preservesPitch = true
+    if ('webkitPreservesPitch' in media) Object.assign(media, { webkitPreservesPitch: true })
+
+    function finish(status: Status) {
+      if (active.current !== media) return
       cancel()
-    }, 4000)
-    try {
-      engine.speak(utterance)
-    } catch {
-      finish('unavailable')
+      setAudio({ source, status })
     }
+
+    let started = false
+    media.onplaying = () => {
+      if (active.current !== media || started) return
+      started = true
+      window.clearTimeout(timer.current)
+      setAudio({ source, status: 'playing' })
+      track('audio_played', { rate: media.playbackRate })
+    }
+    media.onended = () => finish('idle')
+    media.onerror = () => finish('unavailable')
+    setAudio({ source, status: 'starting' })
+    timer.current = window.setTimeout(() => finish('unavailable'), 12000)
+    media.src = '/audio/experiencia/' + file
+    media.play().catch(() => finish('unavailable'))
   }
 
   function changeRate(next: Rate) {
@@ -111,7 +91,7 @@ export function useTravelAudio() {
     }
     track('audio_speed_changed', { rate: next })
     const current = active.current
-    if (current) play(current.utterance.text, current.source, next)
+    if (current) current.defaultPlaybackRate = current.playbackRate = next
   }
 
   return { play, stop, audio, rate, changeRate }

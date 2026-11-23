@@ -287,3 +287,12 @@
   .offer-page .plans-grid { grid-template-columns: minmax(0, 1fr); gap: 10px; }
   .offer-page .guarantee { margin-top: 17px; padding: 12px; }
 }
+
+.experience-app .mission-card .scene-image { aspect-ratio: 4; }
+.experience-app .mission-content { padding: clamp(14px, 3.1vw, 24px); }
+.experience-app .mission-content h1 { font-size: clamp(1.78rem, 4.6vw, 2.55rem); }
+.experience-app .mission-content .context { font-size: 1.075rem; font-weight: 750; color: var(--text); }
+
+@media (max-width: 650px) {
+  .experience-app .mission-card .scene-image { aspect-ratio: 3.15; }
+}

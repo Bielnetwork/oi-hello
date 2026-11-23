@@ -1,5 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
-import { BadgeCheck, CarFront, Check, ChevronLeft, CircleHelp, KeyRound, Languages, Luggage, Plane, Utensils, Volume2, X } from 'lucide-react'
+import { BadgeCheck, Check, ChevronLeft, CircleHelp, KeyRound, Languages, Plane, Utensils, Volume2, X } from 'lucide-react'
 import { Header, Footer } from '../components/Layout'
 import { AudioButton, AudioSpeed, useTravelAudio, type AudioController } from '../components/Audio'
 import { scenes, type Interaction, type Scene } from '../data/scenes'
@@ -7,7 +7,7 @@ import { categories } from '../data/categories'
 import { travelImage } from '../data/images'
 import { track } from '../data/analytics'
 
-const transitionIcons = [BadgeCheck, Luggage, CarFront, KeyRound, Utensils]
+const transitionIcons = [BadgeCheck, KeyRound, Utensils]
 const count = scenes.reduce((total, scene) => total + scene.interactions.length, 0)
 
 function useScreenFocus() {

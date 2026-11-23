@@ -52,61 +52,8 @@ export const scenes: readonly Scene[] = [
     ],
     transition: {
       title: 'Tudo certo! Você terminou essa etapa da simulação.',
-      text: 'Na imigração, use respostas verdadeiras e adequadas à sua viagem. Agora, siga para a retirada de bagagens.',
-      action: 'Ir buscar minha mala',
-    },
-  },
-  {
-    id: 'baggage', title: 'Retirada de bagagens', image: 'baggage',
-    imageAlt: 'A viajante encontra sua mala violeta na esteira do aeroporto',
-    arrival: 'Você passou pela imigração. Mas onde está sua mala?',
-    context: 'O aeroporto é grande. Você avista um funcionário e decide pedir ajuda.',
-    interactions: [
-      {
-        kind: 'ask', speaker: 'Você', line: 'Onde fica a retirada de bagagens?',
-        prompt: 'Qual pergunta você faria ao funcionário?',
-        options: ['Where is baggage claim?', 'Where is the restaurant?', 'Where is the hotel?'], correct: 0,
-        answer: 'Where is baggage claim?', answerTranslation: 'Onde fica a retirada de bagagens?',
-        success: 'Isso! O funcionário sabe para onde você quer ir.',
-        explanation: 'Nos aeroportos dos EUA, procure por “Baggage Claim” nas placas para chegar às esteiras de bagagem.',
-      },
-      {
-        kind: 'listen', speaker: 'Funcionário do aeroporto', line: 'Your bag is on carousel six.',
-        translation: 'Sua mala está na esteira 6.', prompt: 'Ouça ou leia a frase. Qual foi a indicação do funcionário?',
-        options: ['Sua mala está na esteira 6.', 'Sua mala está no portão 6.', 'Sua mala está no balcão 6.'], correct: 0,
-        answer: 'Your bag is on carousel six.', answerTranslation: 'Sua mala está na esteira 6.',
-        success: 'Você encontrou a esteira certa!',
-        explanation: 'No aeroporto, “carousel” é a esteira que gira com as bagagens. “Gate” é portão e “counter” é balcão.',
-      },
-    ],
-    transition: { title: 'Mala encontrada! Agora é hora de ir para o hotel.', action: 'Continuar viagem' },
-  },
-  {
-    id: 'transport', title: 'Transporte', image: 'transport',
-    imageAlt: 'A viajante conversa com o motorista na área de embarque do aeroporto',
-    arrival: 'Você saiu do aeroporto e encontrou seu transporte.',
-    context: 'O motorista está ao lado do carro e pergunta qual é o seu destino.',
-    interactions: [
-      {
-        kind: 'reply', speaker: 'Motorista', line: 'Where are you headed?',
-        translation: 'Para onde você vai?', prompt: 'Seu destino é um hotel em Orlando. Como responderia?',
-        options: ["I'm coming from Brazil.", 'To my hotel in Orlando, please.', 'My flight arrived an hour ago.'], correct: 1,
-        answer: 'To my hotel in Orlando, please.', answerTranslation: 'Para o meu hotel em Orlando, por favor.',
-        success: 'Isso! O motorista já sabe para onde levar você.',
-        explanation: '“Where are you headed?” pergunta o destino. “To” introduz o lugar para onde você vai.',
-      },
-      {
-        kind: 'ask', speaker: 'Você', line: 'Este é o local certo para embarcar?',
-        prompt: 'Antes de entrar no carro, confirme se você está na área correta.',
-        options: ['Is this the drop-off area?', 'Where can I find a taxi?', 'Is this the right pickup area?'], correct: 2,
-        answer: 'Is this the right pickup area?', answerTranslation: 'Este é o local certo para embarcar?',
-        success: 'Boa! Você confirmou o ponto de embarque.',
-        explanation: '“Pickup” indica onde pegam passageiros. “Drop-off” indica o local de desembarque.',
-      },
-    ],
-    transition: {
-      title: 'Você chegou ao hotel! Vamos fazer o check-in.', action: 'Ir para a recepção',
-      image: 'hotel-arrival', imageAlt: 'O carro chega à entrada do hotel em Orlando',
+      text: 'Na imigração, use respostas verdadeiras e adequadas à sua viagem. Depois de retirar a bagagem, siga para o hotel.',
+      action: 'Ir para o hotel',
     },
   },
   {
