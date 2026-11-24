@@ -24,9 +24,9 @@ export function BonusReveal() {
               <span className="ticket-invite">Toque para revelar</span>
             </span>
             <span className="ticket-face ticket-back" aria-hidden={!isOpen}>
-              <Icon size={21} aria-hidden="true"/>
+              <span className="ticket-bonus-icon" aria-hidden="true"><Icon size={25}/></span>
               <strong>{title}</strong>
-              <span id={detailsId}>{description}</span>
+              <span className="ticket-description" id={detailsId}>{description}</span>
             </span>
           </span>
         </button>
