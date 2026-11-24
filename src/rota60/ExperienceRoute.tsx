@@ -6,7 +6,7 @@ export function ExperienceRoute() {
 
   return (
     <div id="root">
-      <ExperiencePage onOffer={() => void navigate({ to: "/oferta" })} />
+      <ExperiencePage onOffer={() => void navigate({ to: "/oferta", search: true })} />
     </div>
   );
 }

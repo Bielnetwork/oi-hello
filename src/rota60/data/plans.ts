@@ -11,16 +11,18 @@ interface Plan {
   price: string
   features: string[]
   button: string
-  checkoutUrl?: string
+  checkoutUrl: string
 }
 
 export const plans: readonly Plan[] = [
   {
     id: 'basic', name: 'Básico', price: '14,90', button: 'Quero o Básico',
+    checkoutUrl: 'https://pay.wiapy.com/bE5X22BknqCi',
     features: ['60 situações práticas', '120 cards digitais', 'Exercícios interativos', 'Áudio em inglês com velocidade ajustável', 'Guia de Bolso', 'Favoritos e progresso'],
   },
   {
     id: 'complete', name: 'Completo', price: '27,90', button: 'Quero o Rota 60 Completo',
+    checkoutUrl: 'https://pay.wiapy.com/pBFz_Yel1mbP',
     features: ['Cards para Imprimir', ...bonuses.map(([name]) => name)],
   },
 ]

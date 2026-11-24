@@ -1,8 +1,9 @@
-import { useEffect, useRef, useState } from 'react'
+import { useEffect, useRef } from 'react'
 import { BadgeCheck, Check, Plane, Printer, Smartphone, Volume2 } from 'lucide-react'
 import { Footer, Header } from '../components/Layout'
 import { BonusReveal } from '../components/BonusReveal'
 import { plans } from '../data/plans'
+import { checkoutHref } from '../routes'
 import { track } from '../data/analytics'
 
 import { categories } from '../data/categories'
@@ -74,8 +75,8 @@ function ProductFormats() {
 type Plan = (typeof plans)[number]
 const featuredFirstPlans = [...plans].sort((a, b) => Number(b.id === 'complete') - Number(a.id === 'complete'))
 
-function OfferPlan({ plan, selected, onSelect }: {
-  plan: Plan; selected: boolean; onSelect: () => void
+function OfferPlan({ plan, onSelect }: {
+  plan: Plan; onSelect: () => void
 }) {
   const complete = plan.id === 'complete'
   return <article className={'plan ' + (complete ? 'plan-complete' : '')} aria-labelledby={'plan-' + plan.id}>
@@ -86,23 +87,12 @@ function OfferPlan({ plan, selected, onSelect }: {
       <ul className="features">
         {plan.features.map(feature => <li key={feature}><Check size={16} aria-hidden="true"/>{feature}</li>)}
       </ul>
-      <button className={complete ? 'primary' : 'outline'} aria-pressed={selected} onClick={onSelect}>{plan.button}</button>
+      <button className={complete ? 'primary' : 'outline'} onClick={onSelect}>{plan.button}</button>
     </div>
   </article>
 }
 
-function readSelection() {
-  try {
-    const value = localStorage.getItem('rota60:plan')
-    return value === 'basic' || value === 'complete' ? value : undefined
-  } catch {
-    return undefined
-  }
-}
-
 export function OfferPage() {
-  const [selected, setSelected] = useState(readSelection)
-  const selectedPlan = plans.find(plan => plan.id === selected)
   const heading = useRef<HTMLHeadingElement>(null)
   const plansHeading = useRef<HTMLHeadingElement>(null)
   useEffect(() => {
@@ -112,14 +102,8 @@ export function OfferPage() {
   }, [])
 
   function selectPlan(plan: Plan) {
-    setSelected(plan.id)
-    try {
-      localStorage.setItem('rota60:plan', plan.id)
-    } catch {
-      // A seleção continua disponível em memória se o armazenamento estiver bloqueado.
-    }
     track('plan_selected', { plan: plan.id })
-    if (plan.checkoutUrl) window.location.assign(plan.checkoutUrl)
+    window.location.assign(checkoutHref(plan.checkoutUrl))
   }
 
   return <>
@@ -143,8 +127,7 @@ export function OfferPage() {
       <section id="oferta-planos" className="plans-section offer-reveal" aria-labelledby="plans-heading">
         <h2 id="plans-heading" tabIndex={-1} ref={plansHeading}>Escolha como quer continuar sua preparação.</h2>
         <div className="plans-grid" id="plans">{featuredFirstPlans.map(plan => <OfferPlan key={plan.id} plan={plan}
-          selected={selected === plan.id} onSelect={() => selectPlan(plan)}/>)}</div>
-        {selectedPlan && <p className="selection-feedback" role="status"><Check size={17}/> Plano {selectedPlan.name} selecionado. Esta é uma prévia demonstrativa.</p>}
+          onSelect={() => selectPlan(plan)}/>)}</div>
       </section>
       <section className="guarantee">
         <span className="stop-icon"><BadgeCheck size={27}/></span>
