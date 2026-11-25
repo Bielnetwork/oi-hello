@@ -262,6 +262,23 @@
 .offer-page .offer-reveal .plan { padding: 13px; border-radius: 16px; }
 .offer-page .offer-reveal .plan:not(.plan-complete) { background: #fdfcfe; box-shadow: none; }
 .offer-page .plan h3 { margin: 0; font-size: .96rem; }
+.plan-payment-terms { margin-top: 8px; color: #5727b6; font-size: .9rem; font-weight: 800; }
+.plan-heading { display: flex; align-items: center; justify-content: space-between; gap: 6px 10px; flex-wrap: wrap; }
+.plan-bestseller {
+  display: inline-flex;
+  align-items: center;
+  gap: 4px;
+  margin-inline-start: auto;
+  padding: 3px 7px;
+  border-radius: 99px;
+  background: #eadcff;
+  color: #4c239d;
+  font-size: .66rem;
+  font-weight: 850;
+  text-transform: uppercase;
+  white-space: nowrap;
+}
+.plan-bestseller svg { flex: none; }
 .offer-page .plan-body { padding: 0; }
 .offer-page .plan .price { margin: 5px 0 8px; }
 .offer-page .plan:not(.plan-complete) .price { color: var(--muted); font-size: 1.55rem; }

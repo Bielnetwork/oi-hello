@@ -1,5 +1,5 @@
 import { useEffect, useRef } from 'react'
-import { BadgeCheck, Check, Plane, Printer, Smartphone, Volume2 } from 'lucide-react'
+import { BadgeCheck, Check, Plane, Printer, Smartphone, Star, Volume2 } from 'lucide-react'
 import { Footer, Header } from '../components/Layout'
 import { BonusReveal } from '../components/BonusReveal'
 import { basicPlan, plans, upgradeOffer } from '../data/plans'
@@ -82,7 +82,10 @@ function OfferPlan({ plan, onSelect }: {
 }) {
   const complete = plan.id === 'complete'
   return <article className={'plan ' + (complete ? 'plan-complete' : '')} aria-labelledby={'plan-' + plan.id}>
-    <h3 id={'plan-' + plan.id}>Rota 60 {plan.name}</h3>
+    <div className="plan-heading">
+      <h3 id={'plan-' + plan.id}>Rota 60 {plan.name}</h3>
+      {complete && <span className="plan-bestseller"><Star size={12} fill="currentColor" aria-hidden="true"/> Mais vendido</span>}
+    </div>
     <div className="plan-body">
       <p className="price"><span>R$</span> {plan.price}</p>
       {complete && <p className="plan-includes">Inclui tudo do Básico +</p>}
@@ -144,6 +147,7 @@ export function OfferPage() {
       <BonusReveal/>
       <section id="oferta-planos" className="plans-section offer-reveal" aria-labelledby="plans-heading">
         <h2 id="plans-heading" tabIndex={-1} ref={plansHeading}>Escolha como quer continuar sua preparação.</h2>
+        <p className="plan-payment-terms">Pagamento único • Acesso vitalício</p>
         <div className="plans-grid" id="plans">{featuredFirstPlans.map(plan => <OfferPlan key={plan.id} plan={plan}
           onSelect={() => {
             if (plan.id === 'complete') selectPlan(plan)
