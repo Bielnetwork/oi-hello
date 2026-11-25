@@ -1,0 +1,74 @@
+.upgrade-offer {
+  position: fixed;
+  inset: 0;
+  box-sizing: border-box;
+  width: min(500px, calc(100% - 24px));
+  max-width: none;
+  max-height: calc(100dvh - 24px);
+  margin: auto;
+  padding: 0;
+  overflow: auto;
+  overscroll-behavior: contain;
+  border: 1px solid #d6b9ff;
+  border-radius: 23px;
+  color: var(--text);
+  background: radial-gradient(ellipse at top right, #f0e5ff, transparent 65%), #fff;
+  box-shadow: 0 22px 70px #301c5a55;
+}
+
+.upgrade-offer::backdrop { background: #211638a8; }
+
+.upgrade-content {
+  position: relative;
+  padding: clamp(17px, 4vw, 29px);
+}
+
+.upgrade-content .upgrade-close {
+  position: absolute;
+  top: 8px;
+  right: 8px;
+  width: 44px;
+  padding: 0;
+}
+
+.upgrade-content h2 {
+  margin-block: 12px 10px;
+  font-size: clamp(1.42rem, 5vw, 2rem);
+  font-weight: 850;
+  letter-spacing: -.045em;
+  line-height: 1.12;
+}
+
+.upgrade-content h2 strong { color: var(--violet); font-weight: inherit; }
+.upgrade-content > p { font-size: .92rem; }
+
+.upgrade-features {
+  display: grid;
+  gap: 5px;
+  margin-block: 9px 15px;
+  padding: 0;
+  list-style: none;
+  font-size: .88rem;
+}
+
+.upgrade-features li { display: flex; align-items: flex-start; gap: 7px; }
+.upgrade-features svg { flex: none; margin-top: 2px; color: var(--violet); }
+
+.upgrade-content .upgrade-price {
+  padding: 7px 9px;
+  border-radius: 10px;
+  background: #f0e5ff;
+  text-align: center;
+}
+.upgrade-price strong { color: #5727b6; font-size: 1.32rem; font-weight: 850; }
+.upgrade-content .upgrade-terms {
+  margin-top: 8px;
+  color: var(--muted);
+  font-size: .78rem;
+  text-align: center;
+}
+
+.upgrade-actions { display: grid; gap: 3px; margin-top: 12px; }
+.upgrade-actions .upgrade-decline { text-align: center; text-decoration: underline; text-underline-offset: 3px; }
+
+html:has(.upgrade-offer[open]) { overflow: hidden; }

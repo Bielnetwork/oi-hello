@@ -2,7 +2,8 @@ import { useEffect, useRef } from 'react'
 import { BadgeCheck, Check, Plane, Printer, Smartphone, Volume2 } from 'lucide-react'
 import { Footer, Header } from '../components/Layout'
 import { BonusReveal } from '../components/BonusReveal'
-import { plans } from '../data/plans'
+import { basicPlan, plans, upgradeOffer } from '../data/plans'
+import { UpgradeOffer } from '../components/UpgradeOffer'
 import { checkoutHref } from '../routes'
 import { track } from '../data/analytics'
 import { trackMetaCheckout } from '../data/metaPixel'
@@ -96,17 +97,22 @@ function OfferPlan({ plan, onSelect }: {
 export function OfferPage() {
   const heading = useRef<HTMLHeadingElement>(null)
   const checkoutInProgress = useRef(false)
+  const upgradeDialog = useRef<HTMLDialogElement>(null)
   const plansHeading = useRef<HTMLHeadingElement>(null)
   useEffect(() => {
     track('offer_viewed')
     window.scrollTo(0, 0)
     heading.current?.focus({ preventScroll: true })
-    const resetCheckout = () => { checkoutInProgress.current = false }
+    const resetCheckout = (event: PageTransitionEvent) => {
+      if (!event.persisted) return
+      checkoutInProgress.current = false
+      upgradeDialog.current?.close()
+    }
     window.addEventListener('pageshow', resetCheckout)
     return () => window.removeEventListener('pageshow', resetCheckout)
   }, [])
 
-  function selectPlan(plan: Plan) {
+  function selectPlan(plan: Pick<Plan, 'id' | 'price' | 'checkoutUrl'>) {
     if (checkoutInProgress.current) return
     const url = checkoutHref(plan.checkoutUrl)
     checkoutInProgress.current = true
@@ -139,7 +145,12 @@ export function OfferPage() {
       <section id="oferta-planos" className="plans-section offer-reveal" aria-labelledby="plans-heading">
         <h2 id="plans-heading" tabIndex={-1} ref={plansHeading}>Escolha como quer continuar sua preparação.</h2>
         <div className="plans-grid" id="plans">{featuredFirstPlans.map(plan => <OfferPlan key={plan.id} plan={plan}
-          onSelect={() => selectPlan(plan)}/>)}</div>
+          onSelect={() => {
+            if (plan.id === 'complete') selectPlan(plan)
+            else if (!checkoutInProgress.current && !upgradeDialog.current?.open) upgradeDialog.current?.showModal()
+          }}/>)}</div>
+        <UpgradeOffer dialogRef={upgradeDialog} onAccept={() => selectPlan(upgradeOffer)}
+          onDecline={() => selectPlan(basicPlan)}/>
       </section>
       <section className="guarantee">
         <span className="stop-icon"><BadgeCheck size={27}/></span>
