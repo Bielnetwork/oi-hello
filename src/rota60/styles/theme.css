@@ -270,6 +270,18 @@ h1 em { display: block; color: var(--violet); font-style: normal; }
   .journey-itinerary .stop-icon { width: 33px; height: 33px; }
   .offer-hero-cta { width: 100%; }
   .format-grid { grid-template-columns: 1fr; }
-  .hero-cards { right: 5%; top: 12%; }
   .product-preview { min-height: 270px; }
+  .offer-hero .product-preview { padding-block: 4px 14px; }
+  .offer-hero .product-preview > * { grid-area: 1 / 1; }
+  .offer-hero .hero-cards {
+    position: relative;
+    inset: auto;
+    justify-self: end;
+    margin-block-start: 16px;
+    margin-inline-end: 5%;
+  }
+}
+
+@media (650px < width < 1024px) {
+  .offer-hero .hero-cards { top: 14%; }
 }
