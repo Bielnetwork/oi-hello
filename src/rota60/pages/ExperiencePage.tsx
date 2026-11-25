@@ -27,12 +27,14 @@ function useScreenFocus() {
 }
 
 function Intro({ onStart }: { onStart: () => void }) {
+  const [ready, setReady] = useState(false)
+  useEffect(() => setReady(true), [])
   return <main className="shell intro-page">
     <section className="intro">
       <div className="intro-copy">
         <span className="eyebrow"><Plane size={15}/> Sua primeira missão nos EUA</span>
         <h1>Você acabou de chegar aos EUA. <em>Conseguiria se virar em inglês?</em></h1>
-        <button className="primary" onClick={onStart}><Plane size={19}/> Começar minha viagem</button>
+        <button className="primary" disabled={!ready} onClick={onStart}><Plane size={19}/> Começar minha viagem</button>
         <div className="intro-details"><span>Gratuito</span><span>Sem cadastro</span><span><Volume2 size={15}/> Com áudio e tradução</span></div>
       </div>
       <figure className="hero-image">

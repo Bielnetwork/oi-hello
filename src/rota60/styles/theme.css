@@ -54,6 +54,7 @@ h1 em { display: block; color: var(--violet); font-style: normal; }
 .outline { border-color: #b9a4e6; color: var(--violet); background: white; }
 .outline:hover { background: #f7f2ff; }
 .intro .primary { margin-top: 26px; }
+.intro .primary:disabled { background: var(--violet); color: var(--white); cursor: wait; }
 .intro-details { display: flex; align-items: center; flex-wrap: wrap; gap: 5px 9px; margin-top: 16px; color: var(--muted); font-size: .77rem; font-weight: 700; }
 .intro-details span { display: inline-flex; align-items: center; gap: 5px; }
 .intro-details span + span::before { content: '•'; margin-right: 4px; color: var(--violet); }
