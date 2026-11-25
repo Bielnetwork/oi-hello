@@ -6,6 +6,13 @@ import { scenes, type Interaction, type Scene } from '../data/scenes'
 import { categories } from '../data/categories'
 import { travelImage } from '../data/images'
 import { track } from '../data/analytics'
+import airportSmall from '../assets/airport-420.webp'
+import airportMedium from '../assets/airport-720.webp'
+import airportLarge from '../assets/airport-1100.webp'
+
+const embedded = import.meta.env['VITE_ROTA60_EMBEDDED'] === 'true'
+const airportSources = `${airportSmall} 420w, ${airportMedium} 720w, ${airportLarge} 1100w`
+const airportSizes = '(max-width: 650px) calc(100vw - 68px), (max-width: 800px) 45vw, (max-width: 1184px) 42vw, 495px'
 
 const transitionIcons = [BadgeCheck, KeyRound, Utensils]
 const count = scenes.reduce((total, scene) => total + scene.interactions.length, 0)
@@ -20,7 +27,7 @@ function useScreenFocus() {
 }
 
 function Intro({ onStart }: { onStart: () => void }) {
-  return <main className="shell intro-page screen-in">
+  return <main className="shell intro-page">
     <section className="intro">
       <div className="intro-copy">
         <span className="eyebrow"><Plane size={15}/> Sua primeira missão nos EUA</span>
@@ -29,7 +36,9 @@ function Intro({ onStart }: { onStart: () => void }) {
         <div className="intro-details"><span>Gratuito</span><span>Sem cadastro</span><span><Volume2 size={15}/> Com áudio e tradução</span></div>
       </div>
       <figure className="hero-image">
-        <img src={travelImage('airport')} alt="Viajante brasileira com mala em um aeroporto americano" fetchPriority="high"/>
+        <img src={embedded ? travelImage('airport') : airportMedium}
+          srcSet={embedded ? undefined : airportSources} sizes={embedded ? undefined : airportSizes}
+          alt="Viajante brasileira com mala em um aeroporto americano" fetchPriority="high"/>
         <figcaption><span className="destination-icon"><Plane size={19}/></span><span><small>DESTINO</small><strong>Estados Unidos</strong></span></figcaption>
       </figure>
     </section>
@@ -163,7 +172,7 @@ function Completion({ onOffer, onReset }: { onOffer: () => void; onReset: () => 
 
 type Position = { scene: number; interaction: number }
 
-export function ExperiencePage({ onOffer }: { onOffer: () => void }) {
+export function ExperiencePage({ onOffer, experienceHref }: { onOffer: () => void; experienceHref?: string | undefined }) {
   const [position, setPosition] = useState<Position>({ scene: -1, interaction: 0 })
   const [answers, setAnswers] = useState<Record<string, number>>({})
   const controller = useTravelAudio()
@@ -202,7 +211,7 @@ export function ExperiencePage({ onOffer }: { onOffer: () => void }) {
   }
 
   return <div className="experience-app">
-    <Header mission onReset={index >= 0 ? reset : undefined}/>
+    <Header mission experienceHref={experienceHref} onReset={index >= 0 ? reset : undefined}/>
     {index === -1 && <Intro onStart={() => { track('experience_started'); goTo({ scene: 0, interaction: 0 }) }}/>}
     {scene && <Mission key={key} index={index} scene={scene} interaction={interaction} selected={answers[key]} controller={controller}
       onSelect={option => {

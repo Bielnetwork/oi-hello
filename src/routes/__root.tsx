@@ -12,8 +12,7 @@ import {
 import { useEffect, type ReactNode } from "react";
 
 import { META_PIXEL_ID, trackMetaPage } from "../rota60/data/metaPixel";
-import appCss from "../styles.css?url";
-import rotaCss from "../rota60/styles/app.css?url";
+import siteCss from "../rota60/styles/site.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
 
 function NotFoundComponent() {
@@ -91,11 +90,7 @@ export const Route = createRootRouteWithContext<{ queryClient: QueryClient }>()(
       { name: "twitter:site", content: "@Lovable" },
     ],
     links: [
-      {
-        rel: "stylesheet",
-        href: appCss,
-      },
-      { rel: "stylesheet", href: rotaCss },
+      { rel: "stylesheet", href: siteCss },
       { rel: "icon", href: "/favicon.ico", type: "image/x-icon" },
     ],
   }),

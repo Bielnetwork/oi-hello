@@ -1,9 +1,9 @@
 import { Compass, Plane, RotateCcw } from 'lucide-react'
 import { routeHref } from '../routes'
 
-export function Header({ onReset, mission = false }: { onReset?: (() => void) | undefined; mission?: boolean }) {
+export function Header({ onReset, mission = false, experienceHref }: { onReset?: (() => void) | undefined; mission?: boolean; experienceHref?: string | undefined }) {
   return <header className="site-header"><div className="header-inner">
-    <a href={routeHref('/experiencia')} className="brand" aria-label="Rota 60, início da experiência" onClick={onReset ? event => {
+    <a href={experienceHref ?? routeHref('/experiencia')} className="brand" aria-label="Rota 60, início da experiência" onClick={onReset ? event => {
       event.preventDefault()
       onReset()
     } : undefined}>
