@@ -1,4 +1,5 @@
 import { useEffect, useRef, useState } from 'react'
+import { preload } from 'react-dom'
 import { BadgeCheck, Check, ChevronLeft, CircleHelp, KeyRound, Languages, Plane, Utensils, Volume2, X } from 'lucide-react'
 import { Header, Footer } from '../components/Layout'
 import { AudioButton, AudioSpeed, useTravelAudio, type AudioController } from '../components/Audio'
@@ -9,9 +10,13 @@ import { track } from '../data/analytics'
 import airportSmall from '../assets/airport-420.webp'
 import airportMedium from '../assets/airport-720.webp'
 import airportLarge from '../assets/airport-1100.webp'
+import airportAvifSmall from '../assets/airport-420.avif'
+import airportAvifMedium from '../assets/airport-720.avif'
+import airportAvifLarge from '../assets/airport-1100.avif'
 
 const embedded = import.meta.env['VITE_ROTA60_EMBEDDED'] === 'true'
 const airportSources = `${airportSmall} 420w, ${airportMedium} 720w, ${airportLarge} 1100w`
+const airportAvifSources = `${airportAvifSmall} 420w, ${airportAvifMedium} 720w, ${airportAvifLarge} 1100w`
 const airportSizes = '(max-width: 650px) calc(100vw - 68px), (max-width: 800px) 45vw, (max-width: 1184px) 42vw, 495px'
 
 const transitionIcons = [BadgeCheck, KeyRound, Utensils]
@@ -29,6 +34,12 @@ function useScreenFocus() {
 function Intro({ onStart }: { onStart: () => void }) {
   const [ready, setReady] = useState(false)
   useEffect(() => setReady(true), [])
+  if (!embedded) {
+    preload(airportAvifMedium, {
+      as: 'image', type: 'image/avif', fetchPriority: 'high',
+      imageSrcSet: airportAvifSources, imageSizes: airportSizes,
+    })
+  }
   return <main className="shell intro-page">
     <section className="intro">
       <div className="intro-copy">
@@ -38,9 +49,12 @@ function Intro({ onStart }: { onStart: () => void }) {
         <div className="intro-details"><span>Gratuito</span><span>Sem cadastro</span><span><Volume2 size={15}/> Com áudio e tradução</span></div>
       </div>
       <figure className="hero-image">
-        <img src={embedded ? travelImage('airport') : airportMedium}
-          srcSet={embedded ? undefined : airportSources} sizes={embedded ? undefined : airportSizes}
-          alt="Viajante brasileira com mala em um aeroporto americano" fetchPriority="high"/>
+        <picture>
+          {!embedded && <source type="image/avif" srcSet={airportAvifSources} sizes={airportSizes}/>}
+          <img src={embedded ? travelImage('airport') : airportMedium}
+            srcSet={embedded ? undefined : airportSources} sizes={embedded ? undefined : airportSizes}
+            alt="Viajante brasileira com mala em um aeroporto americano" fetchPriority="high"/>
+        </picture>
         <figcaption><span className="destination-icon"><Plane size={19}/></span><span><small>DESTINO</small><strong>Estados Unidos</strong></span></figcaption>
       </figure>
     </section>
