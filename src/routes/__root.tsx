@@ -4,12 +4,14 @@ import {
   Link,
   createRootRouteWithContext,
   useRouter,
+  useLocation,
   HeadContent,
   Scripts,
   type ErrorComponentProps,
 } from "@tanstack/react-router";
 import { useEffect, type ReactNode } from "react";
 
+import { META_PIXEL_ID, trackMetaPage } from "../rota60/data/metaPixel";
 import appCss from "../styles.css?url";
 import rotaCss from "../rota60/styles/app.css?url";
 import { reportLovableError } from "../lib/lovable-error-reporting";
@@ -111,6 +113,9 @@ function RootShell({ children }: { children: ReactNode }) {
       </head>
       <body>
         {children}
+        <noscript dangerouslySetInnerHTML={{
+          __html: `<img alt="" height="1" width="1" style="display:none" src="https://www.facebook.com/tr?id=${META_PIXEL_ID}&amp;ev=PageView&amp;noscript=1">`,
+        }} />
         <Scripts />
       </body>
     </html>
@@ -119,6 +124,8 @@ function RootShell({ children }: { children: ReactNode }) {
 
 function RootComponent() {
   const { queryClient } = Route.useRouteContext();
+  const pathname = useLocation({ select: (location) => location.pathname });
+  useEffect(() => trackMetaPage(pathname), [pathname]);
 
   return (
     <QueryClientProvider client={queryClient}>

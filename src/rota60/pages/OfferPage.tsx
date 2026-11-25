@@ -5,6 +5,7 @@ import { BonusReveal } from '../components/BonusReveal'
 import { plans } from '../data/plans'
 import { checkoutHref } from '../routes'
 import { track } from '../data/analytics'
+import { trackMetaCheckout } from '../data/metaPixel'
 
 import { categories } from '../data/categories'
 import { travelImage } from '../data/images'
@@ -94,16 +95,27 @@ function OfferPlan({ plan, onSelect }: {
 
 export function OfferPage() {
   const heading = useRef<HTMLHeadingElement>(null)
+  const checkoutInProgress = useRef(false)
   const plansHeading = useRef<HTMLHeadingElement>(null)
   useEffect(() => {
     track('offer_viewed')
     window.scrollTo(0, 0)
     heading.current?.focus({ preventScroll: true })
+    const resetCheckout = () => { checkoutInProgress.current = false }
+    window.addEventListener('pageshow', resetCheckout)
+    return () => window.removeEventListener('pageshow', resetCheckout)
   }, [])
 
   function selectPlan(plan: Plan) {
+    if (checkoutInProgress.current) return
+    const url = checkoutHref(plan.checkoutUrl)
+    checkoutInProgress.current = true
     track('plan_selected', { plan: plan.id })
-    window.location.assign(checkoutHref(plan.checkoutUrl))
+    try {
+      trackMetaCheckout(Number(plan.price.replace(',', '.')))
+    } finally {
+      window.location.assign(url)
+    }
   }
 
   return <>
