@@ -15,7 +15,7 @@ interface Plan {
 }
 
 export const basicPlan: Plan = {
-  id: 'basic', name: 'Básico', price: '14,90', button: 'Quero o Básico',
+  id: 'basic', name: 'Básico', price: '10,00', button: 'Quero o Básico',
   checkoutUrl: 'https://pay.wiapy.com/bE5X22BknqCi',
   features: ['60 situações práticas', '120 cards digitais', 'Exercícios interativos', 'Áudio em inglês com velocidade ajustável', 'Guia de Bolso', 'Favoritos e progresso'],
 }
@@ -31,6 +31,6 @@ export const plans: readonly Plan[] = [
 
 export const upgradeOffer = {
   id: 'complete',
-  price: '19,90',
+  price: '15,00',
   checkoutUrl: 'https://pay.wiapy.com/RqeWMPAviQP',
 } as const
